@@ -12,22 +12,44 @@
 </head>
 <body>
     <div id="app">
-        <!-- Suggester Page -->
-        <section id="suggester-page" class="page active">
-            <h1 class="huge-text">What are you in the mood for?</h1>
-            <div id="genre-grid" class="bento-grid">
-                <!-- Genres will be dynamically inserted here by JS -->
+        <!-- Layer 1: Landing Page -->
+        <section id="landing-page" class="page active">
+            <canvas id="background-canvas"></canvas>
+            <div class="landing-content">
+                <h1 class="huge-text manifesto">Stop Scrolling.<br>Start Watching.</h1>
+                <button id="start-btn" class="big-button">Find a Movie</button>
             </div>
         </section>
 
-        <!-- Suggestion Page -->
+        <!-- Layer 2: Genre Picker Page -->
+        <section id="suggester-page" class="page">
+            <div class="page-content">
+                <h1 class="huge-text">Pick a Genre...</h1>
+                <div id="genre-grid" class="bento-grid">
+                    <!-- Genres will be dynamically inserted here -->
+                </div>
+                <button id="help-me-choose-btn" class="big-button">...or let us help you choose</button>
+            </div>
+        </section>
+
+        <!-- Layer 3: Questions Page -->
+        <section id="questions-page" class="page">
+             <div class="page-content">
+                <h2 id="question-text" class="huge-text">Question?</h2>
+                <div id="answers-grid" class="bento-grid">
+                    <!-- Answers will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 4: Suggestion Page -->
         <section id="suggestion-page" class="page">
             <div class="suggestion-grid bento-grid">
                 <div id="poster-card" class="bento-box">
                     <img id="movie-poster" src="" alt="Movie Poster" crossOrigin="anonymous">
                     <div class="poster-overlay">
                         <p class="label">OVERVIEW</p>
-                        <p id="movie-overview">A compelling synopsis of the movie goes here, giving you a taste of the story.</p>
+                        <p id="movie-overview">A compelling synopsis of the movie goes here.</p>
                     </div>
                 </div>
                 <div id="title-card" class="bento-box">

@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Page Elements
     const pages = document.querySelectorAll('.page');
-    const landingPage = document.getElementById('landing-page');
     const suggesterPage = document.getElementById('suggester-page');
     const questionsPage = document.getElementById('questions-page');
     const suggestionPage = document.getElementById('suggestion-page');
@@ -77,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const createParticles = () => {
         particles = [];
-        const colors = ["#d0bcff", "#ccc2dc", "#4a4458"];
+        const colors = ["#d0bcff", "#ccc2dc", "#4a4458", "#381e72"];
         for (let i = 0; i < 20; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
                 radius: Math.random() * 80 + 40,
                 color: colors[Math.floor(Math.random() * colors.length)]
             });
@@ -93,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(p => {
             p.x += p.vx; p.y += p.vy;
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            if (p.x - p.radius < 0 || p.x + p.radius > canvas.width) p.vx *= -1;
+            if (p.y - p.radius < 0 || p.y + p.radius > canvas.height) p.vy *= -1;
 
             ctx.beginPath();
             ctx.fillStyle = p.color;
-            ctx.filter = 'blur(80px)';
+            ctx.filter = 'blur(100px)';
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fill();
         });

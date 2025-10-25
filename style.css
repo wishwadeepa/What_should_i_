@@ -25,11 +25,17 @@ body {
     width: 100vw;
     overflow: hidden;
     transition: background-color var(--transition-speed) ease;
+    -webkit-font-smoothing: antialiased; /* Smoother fonts */
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
     width: 100%; height: 100%;
     position: relative;
+    user-select: none; /* --- NO TEXT CURSOR FIX --- */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 /* Page Transitions */

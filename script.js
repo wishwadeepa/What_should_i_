@@ -5,9 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // App State
     let lastUsedFetcher = null;
+    let animationFrameId = null;
 
     // Page Elements
     const pages = document.querySelectorAll('.page');
+    const landingPage = document.getElementById('landing-page');
     const suggesterPage = document.getElementById('suggester-page');
     const questionsPage = document.getElementById('questions-page');
     const suggestionPage = document.getElementById('suggestion-page');
@@ -55,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ]},
         { key: 'origin', text: 'Where from?', answers: [
             { text: 'Hollywood Blockbuster', value: 'with_origin_country=US' },
-            { text: 'International Flavor', value: '' } // Omitting the param shows all
+            { text: 'International Flavor', value: '' }
         ]},
         { key: 'pacing', text: 'Quick watch or an epic journey?', answers: [
             { text: 'Short & Sweet (< 100min)', value: 'with_runtime.lte=100' },
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentQuestionIndex = 0;
     let questionnaireAnswers = {};
     
-    // --- Landing Page Canvas Animation ---
+    // --- Optimized Landing Page Canvas Animation ---
     const canvas = document.getElementById('background-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -77,13 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const createParticles = () => {
         particles = [];
         const colors = ["#d0bcff", "#ccc2dc", "#4a4458", "#381e72"];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 15; i++) { // Fewer particles for better performance
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                radius: Math.random() * 80 + 40,
+                vx: (Math.random() - 0.5) * 0.2, // Slower movement
+                vy: (Math.random() - 0.5) * 0.2,
+                radius: Math.random() * 100 + 50, // Slightly larger
                 color: colors[Math.floor(Math.random() * colors.length)]
             });
         }
@@ -94,20 +96,31 @@ document.addEventListener('DOMContentLoaded', () => {
             p.x += p.vx; p.y += p.vy;
             if (p.x - p.radius < 0 || p.x + p.radius > canvas.width) p.vx *= -1;
             if (p.y - p.radius < 0 || p.y + p.radius > canvas.height) p.vy *= -1;
-
             ctx.beginPath();
             ctx.fillStyle = p.color;
-            ctx.filter = 'blur(100px)';
+            ctx.filter = 'blur(120px)'; // Increase blur for softer shapes
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fill();
         });
-        requestAnimationFrame(animateCanvas);
+        animationFrameId = requestAnimationFrame(animateCanvas);
+    };
+    const stopAnimation = () => {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
     };
     window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
-    resizeCanvas(); createParticles(); animateCanvas();
-
+    
     // --- Navigation ---
     const switchToPage = (pageToShow) => {
+        // --- ANIMATION CONTROL ---
+        if (pageToShow === landingPage) {
+            if (!animationFrameId) animateCanvas(); // Start animation if not running
+        } else {
+            stopAnimation(); // Stop animation on any other page
+        }
+        
         pages.forEach(p => p.classList.remove('active'));
         pageToShow.classList.add('active');
         document.body.style.backgroundColor = pageToShow === suggestionPage ? 'var(--dynamic-bg)' : 'var(--background-color)';
@@ -128,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         answersGrid.innerHTML = '';
         question.answers.forEach(answer => {
             const card = document.createElement('div');
-            card.className = 'genre-card'; // Reuse style
+            card.className = 'genre-card';
             card.textContent = answer.text;
             card.addEventListener('click', () => handleAnswer(question.key, answer.value));
             answersGrid.appendChild(card);
@@ -231,4 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', () => handleGenreSelection(genre.id));
         genreGrid.appendChild(card);
     });
+    
+    // Initial page setup
+    resizeCanvas();
+    createParticles();
+    animateCanvas();
 });

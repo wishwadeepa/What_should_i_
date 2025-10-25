@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Should I Watch This?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Suggester Page -->
+        <section id="suggester-page" class="page active">
+            <h1 class="huge-text">What are you in the mood for?</h1>
+            <div id="genre-grid" class="bento-grid">
+                <!-- Genres will be dynamically inserted here by JS -->
+            </div>
+        </section>
+
+        <!-- Suggestion Page -->
+        <section id="suggestion-page" class="page">
+            <div class="suggestion-grid bento-grid">
+                <div id="poster-card" class="bento-box">
+                    <img id="movie-poster" src="" alt="Movie Poster" crossOrigin="anonymous">
+                    <div class="poster-overlay">
+                        <p class="label">OVERVIEW</p>
+                        <p id="movie-overview">A compelling synopsis of the movie goes here, giving you a taste of the story.</p>
+                    </div>
+                </div>
+                <div id="title-card" class="bento-box">
+                    <h2 id="movie-title" class="huge-text">Movie Title</h2>
+                </div>
+                <div id="rating-card" class="bento-box">
+                    <p class="label">IMDB RATING</p>
+                    <div class="stat-container">
+                        <span id="movie-rating" class="big-number">7.2</span>
+                    </div>
+                </div>
+                 <div id="runtime-card" class="bento-box">
+                    <p class="label">RUNTIME</p>
+                    <div class="stat-container">
+                        <span id="movie-runtime" class="big-number">109</span>
+                        <span class="unit">min</span>
+                    </div>
+                </div>
+                <div id="back-card" class="bento-box button-box">
+                   <button id="back-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
+                        </svg>
+                   </button>
+                </div>
+                <div id="try-again-card" class="bento-box button-box">
+                   <button id="try-again-btn">Another One</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

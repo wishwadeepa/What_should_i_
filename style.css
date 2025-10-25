@@ -1,0 +1,249 @@
+:root {
+    --background-color: #212121;
+    --card-color: #333333;
+    --text-color: #ffffff;
+    --primary-color: #4285F4;
+    --border-radius: 28px;
+    --transition-speed: 0.5s;
+    
+    /* Dynamic colors */
+    --dynamic-bg: var(--background-color);
+    --dynamic-card-bg: var(--card-color);
+    --dynamic-primary-text: var(--text-color);
+    --dynamic-secondary-text: rgba(255, 255, 255, 0.7);
+    --dynamic-accent: var(--primary-color);
+    --dynamic-accent-text: var(--text-color);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    transition: background-color var(--transition-speed) ease;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Page Transitions & Animations */
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    /* Start pages slightly scaled down and shifted up */
+    transform: translateY(-20px) scale(0.98);
+    transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.page.active {
+    opacity: 1;
+    visibility: visible;
+    /* Active pages are centered and at full scale */
+    transform: translateY(0) scale(1);
+}
+
+.huge-text {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    margin: 0 0 2rem 0;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.bento-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+/* Suggester Page */
+#suggester-page .bento-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    width: 100%;
+    max-width: 1000px;
+}
+
+.genre-card {
+    background-color: var(--card-color);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.genre-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Suggestion Page */
+#suggestion-page {
+    background-color: var(--dynamic-bg);
+}
+
+.suggestion-grid {
+    aspect-ratio: 16 / 9;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    margin: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.bento-box {
+    background-color: var(--dynamic-card-bg);
+    border-radius: var(--border-radius);
+    padding: clamp(1rem, 5%, 2rem);
+    display: flex;
+    flex-direction: column;
+    color: var(--dynamic-primary-text);
+    overflow: hidden;
+    
+    /* Staggered Animation Setup */
+    opacity: 0;
+    transform: scale(0.95);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* When suggestion page is active, animate the cards in */
+#suggestion-page.active .bento-box {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Animation Delays */
+#suggestion-page.active #poster-card    { transition-delay: 0.1s; }
+#suggestion-page.active #title-card     { transition-delay: 0.2s; }
+#suggestion-page.active #rating-card    { transition-delay: 0.3s; }
+#suggestion-page.active #runtime-card   { transition-delay: 0.35s; }
+#suggestion-page.active #back-card      { transition-delay: 0.4s; }
+#suggestion-page.active #try-again-card { transition-delay: 0.45s; }
+
+/* Grid Layout & Alignment */
+#poster-card    { grid-column: 1 / 3; grid-row: 1 / 4; padding: 0; position: relative; justify-content: center; }
+#title-card     { grid-column: 3 / 5; grid-row: 1 / 2; justify-content: flex-start; }
+#rating-card    { grid-column: 3 / 4; grid-row: 2 / 3; justify-content: center; align-items: center; }
+#runtime-card   { grid-column: 4 / 5; grid-row: 2 / 3; justify-content: center; align-items: center; }
+#back-card      { grid-column: 3 / 4; grid-row: 3 / 4; justify-content: center; align-items: center; }
+#try-again-card { grid-column: 4 / 5; grid-row: 3 / 4; justify-content: flex-start; }
+
+#movie-poster { width: 100%; height: 100%; object-fit: cover; }
+
+.poster-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: clamp(1rem, 5%, 2rem);
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    color: white;
+}
+.poster-overlay p { font-size: clamp(0.8rem, 2vw, 1rem); line-height: 1.5; }
+
+#title-card { background-color: var(--dynamic-accent); }
+#title-card .huge-text {
+    text-align: left;
+    font-weight: 800;
+    margin: 0;
+    color: var(--dynamic-accent-text);
+    line-height: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition-speed) ease;
+}
+
+.label {
+    font-weight: 600;
+    color: var(--dynamic-secondary-text);
+    text-transform: uppercase;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    letter-spacing: 0.5px;
+    text-align: center;
+    width: 100%;
+}
+
+.stat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.big-number {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 800;
+}
+
+.unit {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    font-weight: 600;
+    color: var(--dynamic-secondary-text);
+}
+
+.button-box { padding: 0; cursor: pointer; }
+.button-box:hover { filter: brightness(0.9); }
+.button-box button {
+    background: none; border: none; color: inherit;
+    font-family: 'Poppins', sans-serif;
+    width: 100%; height: 100%;
+    font-weight: 800; cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#back-card svg { width: 45%; height: 45%; max-width: 45px; fill: currentColor; }
+
+#try-again-card { background-color: var(--dynamic-accent); }
+#try-again-card button { 
+    color: var(--dynamic-accent-text); 
+    text-align: left; 
+    justify-content: flex-start;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    line-height: 1.2;
+    padding: clamp(1rem, 5%, 2rem);
+    transition: color var(--transition-speed) ease;
+}
+
+/* Responsive */
+@media (max-width: 768px), (max-aspect-ratio: 1/1) {
+    .page { padding: 1rem; }
+    .suggestion-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        aspect-ratio: initial;
+        width: 100%;
+        height: auto;
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+    #poster-card, #title-card, #rating-card, #runtime-card, #back-card, #try-again-card {
+        grid-column: auto; grid-row: auto;
+    }
+    #poster-card { min-height: 300px; }
+    #back-card, #try-again-card, #rating-card, #runtime-card { min-height: 120px; }
+    #title-card { min-height: 100px; }
+}
